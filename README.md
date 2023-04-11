@@ -1,2 +1,3 @@
 # demo-site
-website in s3 using github cicd
+hosting website in s3 using github workflow
+
