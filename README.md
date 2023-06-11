@@ -1,2 +1,1 @@
-# demo-site
-hosting website using github pages 
+#hosting website using github pages 
