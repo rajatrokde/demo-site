@@ -30,4 +30,4 @@ jobs:
 
       run: |
 
-        aws ec2 run-instances --image-id ami-053b0d53c279acc90 --count 1 --instance-type t2.micro --key-name Rajesh --security-group-ids sg-0ba21eab4b79e3dbe --subnet-id subnet-0da40012e9b28bb00
+        aws ec2 run-instances --image-id ami-06b09bfacae1453cb --count 1 --instance-type t2.micro --key-name Rajesh --security-group-ids sg-0ba21eab4b79e3dbe --subnet-id subnet-0da40012e9b28bb00
