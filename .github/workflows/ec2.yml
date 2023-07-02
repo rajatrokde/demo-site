@@ -1,5 +1,5 @@
 
-name: Create EC2 instance
+name: Create EC2 instan
 
 on: [push]
 
