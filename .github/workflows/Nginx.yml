@@ -19,4 +19,4 @@ jobs:
 
     - name: Update system and install Nginx
       run: |
-        ssh -i Rajesh ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com "sudo yum update -y && sudo yum install -y nginx && sudo service nginx start"
+    ssh -i Rajesh ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com "sudo yum update -y && sudo yum install -y nginx && sudo service nginx start"
