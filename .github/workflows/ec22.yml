@@ -1,4 +1,4 @@
-name: Auto EC2 Deploymentss
+name: Auto EC2 loymentss
 
 on:
   push:
