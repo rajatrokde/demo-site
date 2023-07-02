@@ -42,10 +42,10 @@ jobs:
           echo "Instance IP: $INSTANCE_IP"
 
           # Copy index.html file to the EC2 instance
-          scp -i <path-to-key-pair> <path-to-index.html> ec2-user@$INSTANCE_IP:~/index.html
+          scp -i Rajesh index.html ec2-user@$INSTANCE_IP:~/index.html
 
           # Update Nginx configuration to serve the new file
           ssh -i <path-to-key-pair> ec2-user@$INSTANCE_IP 'sudo sed -i "s#/usr/share/nginx/html#/home/ec2-user/index.html#" /etc/nginx/nginx.conf'
 
           # Restart Nginx to apply the changes
-          ssh -i <path-to-key-pair> ec2-user@$INSTANCE_IP 'sudo systemctl restart nginx'
+          ssh -i Rajesh ec2-user@$INSTANCE_IP 'sudo systemctl restart nginx'
