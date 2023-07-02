@@ -1,4 +1,4 @@
-name: Auto EC2 loymentss
+name: Auto C2 loymentss
 
 on:
   push:
