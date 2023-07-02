@@ -1,0 +1,51 @@
+name: Auto EC2 Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Create EC2 instance
+        id: create-instance
+        run: |
+          # Use AWS CLI to create EC2 instance
+          # Replace the placeholder values with your desired configuration
+          aws ec2 run-instances --image-id ami-053b0d53c279acc90 --instance-type t2.micro --key-name Rajesh --subnet-id subnet-0da40012e9b28bb00 --security-group-ids sg-0ba21eab4b79e3dbe --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-instance}]' --output json > instance.json
+
+      - name: Get instance ID
+        id: instance-id
+        run: |
+          # Parse the instance ID from the response and store it as an output
+          INSTANCE_ID=$(cat instance.json | jq -r '.Instances[0].InstanceId')
+          echo "::set-output name=instance_id::$INSTANCE_ID"
+
+      - name: Install Nginx
+        run: |
+          # Use SSH to connect to the EC2 instance and install Nginx
+          # Retrieve the public IP address of the created instance
+          INSTANCE_IP=$(aws ec2 describe-instances --instance-ids ${{ steps.instance-id.outputs.instance_id }} --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
+          echo "Instance IP: $INSTANCE_IP"
+
+          # Copy index.html file to the EC2 instance
+          scp -i <path-to-key-pair> <path-to-index.html> ec2-user@$INSTANCE_IP:~/index.html
+
+          # Update Nginx configuration to serve the new file
+          ssh -i <path-to-key-pair> ec2-user@$INSTANCE_IP 'sudo sed -i "s#/usr/share/nginx/html#/home/ec2-user/index.html#" /etc/nginx/nginx.conf'
+
+          # Restart Nginx to apply the changes
+          ssh -i <path-to-key-pair> ec2-user@$INSTANCE_IP 'sudo systemctl restart nginx'
