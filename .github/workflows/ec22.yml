@@ -41,11 +41,11 @@ jobs:
           INSTANCE_IP=$(aws ec2 describe-instances --instance-ids ${{ steps.instance-id.outputs.instance_id }} --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
           echo "Instance IP: $INSTANCE_IP"
 
-          # Copy index.html file to the EC2 instance
-          scp -i Rajesh index.html ec2-user@$INSTANCE_IP:~/index.html
+            # Copy index.html file to the EC2 instance
+          scp -i ${{ secrets.KEY_PAIR_PATH }} ${{ secrets.INDEX_HTML_PATH }} ec2-user@$INSTANCE_IP:~/index.html
 
           # Update Nginx configuration to serve the new file
-          ssh -i <path-to-key-pair> ec2-user@$INSTANCE_IP 'sudo sed -i "s#/usr/share/nginx/html#/home/ec2-user/index.html#" /etc/nginx/nginx.conf'
+          ssh -i ${{ secrets.KEY_PAIR_PATH }} ec2-user@$INSTANCE_IP 'sudo sed -i "s#/usr/share/nginx/html#/home/ec2-user/index.html#" /etc/nginx/nginx.conf'
 
           # Restart Nginx to apply the changes
-          ssh -i Rajesh ec2-user@$INSTANCE_IP 'sudo systemctl restart nginx'
+          ssh -i ${{ secrets.KEY_PAIR_PATH }} ec2-user@$INSTANCE_IP 'sudo systemctl restart nginx'
