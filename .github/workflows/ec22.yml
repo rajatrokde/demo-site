@@ -20,7 +20,7 @@ jobs:
 
     - name: Create EC2 instance
       run: |
-        aws ec2 run-instances --image-id ami-0abcdef1234567890 --count 1 --instance-type t2.micro --key-name my-key-pair --security-group-ids sg-903004f8 --subnet-id subnet-6e7f829e
+        aws ec2 run-instances --image-id ami-053b0d53c279acc90 --count 1 --instance-type t2.micro --key-name my-key-pair --security-group-ids sg-903004f8 --subnet-id subnet-6e7f829e
 
 
 
