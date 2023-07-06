@@ -1,0 +1,29 @@
+name: Create/Update EC2 instance
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Create/Update EC2 instance
+      run: |
+        # Create an EC2 instance
+        aws ec2 run-instances --image-id ami-06b09bfacae1453cb --count 5 --instance-type t2.micro --key-name Rajesh --security-group-ids sg-0ba21eab4b79e3dbe --subnet-id subnet-0da40012e9b28bb00 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=MyInstance}]'
+
+        # Get the IDs of the newly created instances
+        instance_ids=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=MyInstance" --query "Reservations[].Instances[].InstanceId" --output text)
+
+        # Update the instance name
+        aws ec2 create-tags --resources $instance_ids --tags "Key=Name,Value=NewInstanceName"
