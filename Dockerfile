@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port that the website will be running on
-EXPOSE 80
+EXPOSE 8000
 
 # Set the command to run the website
 CMD ["python", "app.py"]
