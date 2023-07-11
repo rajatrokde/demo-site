@@ -1,20 +1,11 @@
-# Use an official Python runtime as the base image
-FROM python:3.9
+# Use a lightweight web server as the base image
+FROM nginx:latest
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the requirements file to the container
-COPY requirements.txt .
-
-# Install the dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the website files to the container
-COPY . .
+# Copy the website files to the default web server directory
+COPY . /usr/share/nginx/html
 
 # Expose the port that the website will be running on
-EXPOSE 8000
+EXPOSE 80
 
-# Set the command to run the website
-CMD ["python", "app.py"]
+# Set the command to start the web server
+CMD ["nginx", "-g", "daemon off;"]
