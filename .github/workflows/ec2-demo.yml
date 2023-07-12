@@ -1,4 +1,4 @@
-name: Create/Update EC2 instance
+name: Create/Update EC2 instances
 
 on: [push]
 
